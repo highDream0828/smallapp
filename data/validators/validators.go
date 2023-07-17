@@ -2,7 +2,7 @@ package validators
 
 import (
 	"errors"
-	"github.com/highdream0828/smallapp/data/dbspeeds"
+	"regexp"
 	"github.com/highdream0828/smallapp/data/models"
 )
 

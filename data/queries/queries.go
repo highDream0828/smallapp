@@ -8,7 +8,7 @@ import (
 
 func GetUserByEmail(email string) (models.User, error) {
 
-	var user User
+	var user models.User
 	row := dbspeeds.DB.QueryRow("SELECT * FROM users WHERE email = $1", email)
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
 	if err != nil {
@@ -21,7 +21,7 @@ func GetUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func CreateUser(user model.User) (int, error) {
+func CreateUser(user models.User) (int, error) {
 
 	result := dbspeeds.DB.Exec("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
 
