@@ -3,7 +3,7 @@ package migrations
 import (
 "database/sql"
 _ "github.com/lib/pq" // Postgres driver
-"github.com/highdream0828/data/dbspeeds"
+"github.com/highdream0828/smallapp/data/dbspeeds"
 )
 
 func Up() {
