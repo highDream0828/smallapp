@@ -22,9 +22,9 @@ func HashPassword(password string) string {
 func Register(c echo.Context) error {
 	// Parse request body
 	var user struct {
-		Name string json:"name"
-		Email string json:"email"
-		Password string json:"password"
+		Name string `json:"name"`
+		Email string `json:"email"`
+		Password string `json:"password"`
 	}
 	// Binding the &user struct from the request
 	c.Bind(&user)
