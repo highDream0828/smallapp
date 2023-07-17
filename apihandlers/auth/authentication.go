@@ -3,9 +3,10 @@ package auth
 import (
 	"net/http"
 
+	"log"
+	"time"
 	"github.com/labstack/echo/v4"
 	"database/sql"
-	"github.com/highdream0828/smallapp/data/dbspeeds"
 	"github.com/highdream0828/smallapp/data/validators"
 	"github.com/highdream0828/smallapp/data/queries"
 	"github.com/highdream0828/smallapp/data/models"
@@ -18,8 +19,7 @@ func HashPassword(password string) string {
     bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	// Handle error
     if err != nil {
-        log.Fatal(err)  
-		return  
+		log.Fatal(err)  
     }
     return string(bytes) 
 }
@@ -49,10 +49,7 @@ func Register(c echo.Context) error {
 func Login(c echo.Context) error {
   
     // Get and validate input credentials
-    var creds struct {
-        Email    string `form:"email" validate:"required,email"`
-        Password string `form:"password" validate:"required"` 
-    }   
+    var creds models.creds
     c.Bind(&creds)
     if err := validators.ValidateUser(creds); err != nil {
         return c.JSON(400, err)
