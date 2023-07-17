@@ -23,7 +23,7 @@ func GetUserByEmail(email string) (models.User, error) {
 
 func CreateUser(user models.User) (int, error) {
 
-	result := dbspeeds.Exec("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
+	result, _ := dbspeeds.Exec("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
 
 	id, err := result.LastInsertId()   
 	if err != nil {
