@@ -78,5 +78,5 @@ func Login(c echo.Context) error {
     }
         
     // Return token        
-    return c.JSON(200,  {"token": token})
+    return c.JSON(200, token)
 }
