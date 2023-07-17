@@ -4,7 +4,7 @@ import (
     
     "github.com/labstack/echo/v4"
 	"github.com/highdream0828/smallapp/apihandlers/auth"
-	"github.com/highdream0828/smallapp/data/migration"
+	"github.com/highdream0828/smallapp/data/migrations"
 	"github.com/highdream0828/smallapp/data/dbspeeds"
 )
 
