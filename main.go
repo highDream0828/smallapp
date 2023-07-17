@@ -1,14 +1,18 @@
 package main
 
 import (
-    "net/http"
     
     "github.com/labstack/echo/v4"
-	"github.com/smallapp/apihandlers/auth"
+	"github.com/highdream0828/smallapp/apihandlers/auth"
+	"github.com/highdream0828/smallapp/data/migration"
+	"github.com/highdream0828/smallapp/data/dbspeeds"
 )
 
 func main() {
     e := echo.New()
-    e.GET("/", auth.Signup)
+    dbspeeds.Connect
+    migration.Up
+    e.post("/users", auth.Register)
+    e.post("/users/login", auth.Login)
     e.Logger.Fatal(e.Start(":1323"))
 }
