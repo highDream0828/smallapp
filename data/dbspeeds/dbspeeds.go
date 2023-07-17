@@ -11,7 +11,7 @@ var ( DB *sql.DB )
 func Connect() {
 
 	// Connection string 
-	src := "postgres://username:password@host:port/database"
+	src := "postgres://postgres:postgres@localhost:5432/User"
 
 	// Connect to database 
 	var err error

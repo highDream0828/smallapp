@@ -3,9 +3,10 @@ package queries
 import (
 	"database/sql"
 	"github.com/highdream0828/smallapp/data/dbspeeds"
+	"github.com/highdream0828/smallapp/data/models"
 )
 
-func GetUserByEmail(email string) (User, error) {
+func GetUserByEmail(email string) (models.User, error) {
 
 	var user User
 	row := dbspeeds.DB.QueryRow("SELECT * FROM users WHERE email = $1", email)
@@ -20,7 +21,7 @@ func GetUserByEmail(email string) (User, error) {
 	return user, nil
 }
 
-func CreateUser(user User) (int, error) {
+func CreateUser(user model.User) (int, error) {
 
 	result := dbspeeds.DB.Exec("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
 

@@ -1,8 +1,12 @@
 package validators
 
-import "errors"
+import (
+	"errors"
+	"github.com/highdream0828/smallapp/data/dbspeeds"
+)
 
-func ValidateUser(user User) error {
+
+func ValidateUser(user models.User) error {
 
     if user.Name == "" {
         return errors.New("name is required")
@@ -19,7 +23,7 @@ func ValidateUser(user User) error {
     return nil
 }
 
-func ValidateLogin(credentials Credentials) error {
+func ValidateLogin(credentials models.Credentials) error {
    
     if credentials.Email == "" {
         return errors.New("email is required")    
