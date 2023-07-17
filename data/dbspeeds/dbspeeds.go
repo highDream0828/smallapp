@@ -28,7 +28,7 @@ func Deinitialize() {
 	DB.Close()
 }
 
-// execute queries that retrieve data from the database, like SELECT statements.
+// Execute queries that retrieve data from the database, like SELECT statements.
 func Query(sql string, args ...interface{}) (*sql.Rows, error) {
 	return DB.Query(sql, args...)
 }

@@ -49,14 +49,14 @@ func Register(c echo.Context) error {
 func Login(c echo.Context) error {
   
     // Get and validate input credentials
-    var creds models.creds
+    var creds models.Credentials
     c.Bind(&creds)
-    if err := validators.ValidateUser(creds); err != nil {
+    if err := validators.ValidateLogin(creds); err != nil {
         return c.JSON(400, err)
     }
         
     // Query database for user 
-    user, err := queries.GetUserByEmail(creds.email)
+    user, err := queries.GetUserByEmail(creds.Email)
     if err != nil {
 		if err == sql.ErrNoRows {
 			return c.JSON(404, "User not found")
@@ -65,8 +65,8 @@ func Login(c echo.Context) error {
 	}
 	
     // Validate password
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password))
-	if err != nil {
+	compareerr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password))
+	if compareerr != nil {
 		// Handle error
 		return c.JSON(http.StatusUnauthorized, "Password does not match!") 
 	} 

@@ -10,9 +10,9 @@ import (
 
 func main() {
     e := echo.New()
-    dbspeeds.Connect
-    migration.Up
-    e.post("/users", auth.Register)
-    e.post("/users/login", auth.Login)
+    dbspeeds.Connect()
+    migrations.Up()
+    e.POST("/users", auth.Register)
+    e.POST("/users/login", auth.Login)
     e.Logger.Fatal(e.Start(":1323"))
 }

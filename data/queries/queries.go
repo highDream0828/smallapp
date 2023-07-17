@@ -9,7 +9,7 @@ import (
 func GetUserByEmail(email string) (models.User, error) {
 
 	var user models.User
-	row := dbspeeds.DB.QueryRow("SELECT * FROM users WHERE email = $1", email)
+	row, _ := dbspeeds.Query("SELECT * FROM user WHERE email = $1", email)
 	err := row.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -23,7 +23,7 @@ func GetUserByEmail(email string) (models.User, error) {
 
 func CreateUser(user models.User) (int, error) {
 
-	result, _ := dbspeeds.Exec("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
+	result, _ := dbspeeds.Exec("INSERT INTO user (name, email, password) VALUES ($1, $2, $3)", user.Name, user.Email, user.Password)
 
 	id, err := result.LastInsertId()   
 	if err != nil {
