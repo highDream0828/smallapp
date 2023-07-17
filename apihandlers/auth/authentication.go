@@ -8,24 +8,25 @@ import (
 	"github.com/highdream0828/smallapp/data/dbspeeds"
 	"github.com/highdream0828/smallapp/data/validators"
 	"github.com/highdream0828/smallapp/data/queries"
+	"github.com/highdream0828/smallapp/data/models"
 	"golang.org/x/crypto/bcrypt"
 )
 // Hash password
 func HashPassword(password string) string {
 	// Hashes the password string with a work factor of 14
     bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-    handleError(err)  
+	// Handle error
+    if err != nil {
+        log.Fatal(err)  
+		return  
+    }
     return string(bytes) 
 }
 
 // Register new user
 func Register(c echo.Context) error {
 	// Parse request body
-	var user struct {
-		Name string `json:"name"`
-		Email string `json:"email"`
-		Password string `json:"password"`
-	}
+	var user models.User
 	// Binding the &user struct from the request
 	c.Bind(&user)
 	
@@ -34,14 +35,14 @@ func Register(c echo.Context) error {
 		return c.JSON(400, err)
 	}
 
-	user.Password = hashPassword(user.Password)
+	user.Password = HashPassword(user.Password)
 	// Insert user into database without ORM   
 	result, err := queries.CreateUser(user)   
 	if err != nil {
 		return c.JSON(500, err)
 	}
 	
-	return c.JSON(200, result.RowsAffected)
+	return c.JSON(200, result)
 }
 
 func Login(c echo.Context) error {
@@ -66,17 +67,34 @@ func Login(c echo.Context) error {
 	}
 	
     // Validate password
-    if !bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password)) {
-        c.JSON(http.StatusUnauthorized, ErrInvalidCredentials) 
-   		return
-    }
-        
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(creds.Password))
+	if err != nil {
+		// Handle error
+		return c.JSON(http.StatusUnauthorized, "Password does not match!") 
+	} 
     // Generate JWT token     
-    token, err := createToken(user.ID)
+    token, err := createToken(user)
     if err != nil {
          return c.JSON(500, err)
     }
         
     // Return token        
     return c.JSON(200, token)
+}
+
+func createToken(user models.User) (string, error) {
+    // Create token 
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+        "user_id": user.ID,
+        "name": user.Name,
+        "email": user.Email,
+        "exp": time.Now().Add(time.Minute * 30).Unix(),
+    })
+    // Generate encoded token and return 
+    tokenString, err := token.SignedString([]byte("secret"))
+    if err != nil {
+        return "", err
+    }  
+   
+    return tokenString, nil   
 }
