@@ -9,6 +9,7 @@ import (
 	"github.com/highdream0828/smallapp/data/validators"
 	"github.com/highdream0828/smallapp/data/queries"
 	"github.com/highdream0828/smallapp/data/models"
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 // Hash password
