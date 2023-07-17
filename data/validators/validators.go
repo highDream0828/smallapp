@@ -3,8 +3,14 @@ package validators
 import (
 	"errors"
 	"github.com/highdream0828/smallapp/data/dbspeeds"
+	"github.com/highdream0828/smallapp/data/models"
 )
 
+func isValidEmail(email string) bool {
+	// Validate Email
+    emailRegExp := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+    return emailRegExp.MatchString(email)
+}
 
 func ValidateUser(user models.User) error {
 
